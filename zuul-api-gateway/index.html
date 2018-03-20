@@ -1,0 +1,45 @@
+<html>
+<head>
+<script>
+	function fnGo(goSrc){
+		var window = document.getElementById('innerWindow');
+		window.src =goSrc;
+	}
+</script>
+</head>
+<body>
+<div style="float:left,width=100%">
+<a href="javascript:fnGo('http://127.0.0.1:1001')">访问eureka-server(节点1)</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:fnGo('http://127.0.0.1:1002')">访问eureka-server(节点2)</a></br></br>
+<!--<a href="">访问producer</a></br>-->
+<a href="javascript:fnGo('http://127.0.0.1:5555/eureka-consumer-ribbon/ribbonController/ribbon-consumer?accessToken=%22accessToken%22')">访问consumer-ribbon-方法1</a></br>
+<a href="javascript:fnGo('http://127.0.0.1:5555/eureka-consumer-ribbon/ribbonController/ribbon-consumer2?accessToken=%22accessToken%22')">访问consumer-ribbon-方法2</a></br></br>
+
+<!--
+机器性能所限,不好模拟
+<a href="javascript:fnGo('http://127.0.0.1:5555/eureka-consumer-ribbon/ribbonController/hystrixLimiting?accessToken=%22accessToken%22&triggered=false')">访问consumer-ribbon-hystrixLimiting方法,能够正常访问</a></br>
+<a href="javascript:fnGo('http://127.0.0.1:5555/eureka-consumer-ribbon/ribbonController/hystrixLimiting?accessToken=%22accessToken%22&triggered=true')">访问consumer-ribbon-hystrixLimiting方法,线程将会阻塞,在未释放时服务将降级.</a></br></br>
+-->
+
+<a href="javascript:fnGo('http://127.0.0.1:5555/eureka-consumer-ribbon/ribbonController/hystrixCircuitBreaker?accessToken=%22accessToken%22&triggered=false')">访问consumer-ribbon-hystrixCircuitBreaker方法,能够正常访问</a></br>
+<a href="javascript:fnGo('http://127.0.0.1:5555/eureka-consumer-ribbon/ribbonController/hystrixCircuitBreaker?accessToken=%22accessToken%22&triggered=true')">访问consumer-ribbon-hystrixCircuitBreaker方法,10秒内手动触发异常10次以上(请狂点).前10次将会服务降级,之后直接熔断(即便是正常的请求也会降级处理),5秒后重新检测是否熔断.</a></br></br>
+
+
+<a href="javascript:fnGo('http://127.0.0.1:5555/eureka-consumer-feign/feignController/feign-consumer?accessToken=%22accessToken%22')">访问consumer-feign-方法1</a></br>
+<a href="javascript:fnGo('http://127.0.0.1:5555/eureka-consumer-feign/feignController/feign-consumer2?accessToken=%22accessToken%22')">访问consumer-feign-方法2</a></br></br>
+<a target="_blank" href="http://192.168.188.81/gitlab">访问gitlab(root|12345678s)</a></br></br>
+<a target="_blank" href="http://127.0.0.1:9000/hystrix">ribbon-consumer1-hystry监控(输入:   http://127.0.0.1:9000/hystrix.stream</a></br>
+<a target="_blank" href="http://127.0.0.1:9000/hystrix">ribbon-consumer2-hystry监控(输入:   http://127.0.0.1:9001/hystrix.stream</a></br></br></br></br>
+<a target="_blank" href="https://github.com/Netflix/Hystrix/wiki/Configuration">histrix 详细配置官方文档</a></br>
+<a target="_blank" href="http://blog.csdn.net/u012314558/article/details/78347219">histrix 详细配置中文文档</a></br>
+<a target="_blank" href="http://blog.csdn.net/chunlongyu/article/details/53259014">histrix 服务熔断和降级</a></br>
+
+</div>
+</br>
+<div style="float:left,width:100%">
+<iframe id="innerWindow" src="" width="100%" height="100%"></iframe>
+
+</div>
+</body>
+
+
+</html>
