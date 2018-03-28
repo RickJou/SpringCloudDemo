@@ -1,0 +1,1 @@
+java -Xms1024m -Xmx1024m -jar ./target/eureka-register.jar --spring.profiles.active=registry2
