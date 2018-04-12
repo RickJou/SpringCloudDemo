@@ -1,0 +1,2 @@
+#网段优先级规划如下:部署在docker中,由于其他微服务不在该docker容器中,所以为了其他节点能够正常使用,所以写死ip
+java -Xms1024m -Xmx1024m -Xss256k -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=128m -XX:NewSize=650m -XX:MaxNewSize=650m -XX:SurvivorRatio=22 -jar ./swaggerui-eureka.jar --server.port=19080 --eureka.instance.ip-address=192.168.21.26 --eureka.client.serviceUrl.defaultZone=http://192.168.21.26:10001/eureka/,http://192.168.21.26:10002/eureka/,http://192.168.21.26:10003/eureka/
