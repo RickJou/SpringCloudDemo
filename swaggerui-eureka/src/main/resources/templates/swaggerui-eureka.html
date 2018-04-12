@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>API总览</title>
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" th:href="@{/bootstrap-3.3.7-dist/css/bootstrap.min.css}" />
+
+<script type="text/javascript">
+	function fnShowUriForRightPanel(src){
+		$('#showUri').attr('src',src+"/swagger-ui.html"); 
+	}
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" th:src="@{/jquery-3.3.1.min.js}"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/bootstrap-3.3.7-dist/js/bootstrap.min.js}"></script>
+
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+
+<div class="row">
+  <!-- 左侧布局 -->
+  <div class="col-md-2">
+  	<div class="panel-group" id="accordion">
+		<div class="panel panel-default">
+			<div class="temp" th:each="service,state:${allService}">
+		     <div class="panel-heading">
+		         <h4 class="panel-title">
+		             <button  data-toggle="collapse" data-parent="#accordion" class="btn btn-success btn-block btn-lg" href="#collapseThree" th:href="'#collapseThree'+${state.index}" th:text="${service.key}">
+		             	hello click
+		             </button >
+		         </h4>
+		     </div>
+		     <div id="collapseThree" th:id="'collapseThree'+${state.index}" class="panel-collapse collapse">
+		         <div class="tempList" th:each="uri:${service.value}">
+			         <div class="panel-body" style="padding-top:2px;padding-bottom:2px;width:90%;float:right;">
+					    <button class="btn btn-primary btn-block" th:text="${uri}" th:onclick="'javascript:fnShowUriForRightPanel(\''+${uri}+'\')'">
+	             			go uri
+	             	 	</button >
+			         </div>
+		         </div>
+		     </div>
+		    </div>
+		</div>
+	</div>
+  </div>
+  <!-- 右侧布局 -->
+  <div class="col-md-10">
+  	<div class="embed-responsive embed-responsive-16by9">
+	  <iframe id="showUri" class="embed-responsive-item" src="http://www.baidu.com"></iframe>
+	</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
