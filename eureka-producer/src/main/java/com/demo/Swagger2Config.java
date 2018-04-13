@@ -2,26 +2,33 @@ package com.demo;
 
 import static com.google.common.collect.Lists.newArrayList;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 
 import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.AuthorizationScope;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.DocExpansion;
+import springfox.documentation.swagger.web.InMemorySwaggerResourcesProvider;
 import springfox.documentation.swagger.web.ModelRendering;
 import springfox.documentation.swagger.web.OperationsSorter;
 import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
+import springfox.documentation.swagger.web.SwaggerResource;
+import springfox.documentation.swagger.web.SwaggerResourcesProvider;
 import springfox.documentation.swagger.web.TagsSorter;
 import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
@@ -33,6 +40,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Import({
 	springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class
 })
+@SuppressWarnings({"rawtypes","unchecked"})
 public class Swagger2Config {
 	//@Autowired
 	//private TypeResolver typeResolver;
@@ -94,12 +102,12 @@ public class Swagger2Config {
 	   * 此SecurityContext适用的路径的选择器。
 	   * @return
 	   */
-	  private SecurityContext securityContext() {
+	  /*private SecurityContext securityContext() {
 	    return SecurityContext.builder()
 	        .securityReferences(defaultAuth())
 	        .forPaths(PathSelectors.regex("/anyPath.*"))
 	        .build();
-	  }
+	  }*/
 
 	  List<SecurityReference> defaultAuth() {
 	    AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
@@ -133,10 +141,10 @@ public class Swagger2Config {
 	        .displayOperationId(false)
 	        .defaultModelsExpandDepth(1)
 	        .defaultModelExpandDepth(1)
-	        .defaultModelRendering(ModelRendering.EXAMPLE)
+	        .defaultModelRendering(ModelRendering.MODEL)
 	        .displayRequestDuration(false)
-	        .docExpansion(DocExpansion.NONE)
-	        .filter(false)
+	        .docExpansion(DocExpansion.FULL)
+	        .filter(true)
 	        .maxDisplayedTags(null)
 	        .operationsSorter(OperationsSorter.ALPHA)
 	        .showExtensions(false)
@@ -145,4 +153,62 @@ public class Swagger2Config {
 	        .validatorUrl(null)
 	        .build();
 	  }
+	  
+	  
+	@Autowired
+	private DiscoveryClient discoveryClient;
+	
+	@Primary
+	@Bean
+	public SwaggerResourcesProvider swaggerResourcesProvider(InMemorySwaggerResourcesProvider defaultResourcesProvider) {
+	    return () -> {
+	    	List<SwaggerResource> resources = new ArrayList<>(defaultResourcesProvider.get());
+	    	
+	    	TreeMap allService = getAllServiceByEureka();
+	    	allService.forEach((serviceName,value)->{
+	    		List<String> serviceInstances = (List<String>) value;
+	    		serviceInstances.forEach(serviceUri->{
+	    			SwaggerResource wsResource = new SwaggerResource();
+			        wsResource.setName(serviceName+"-"+serviceUri);
+			        wsResource.setSwaggerVersion("2.0");
+			        wsResource.setUrl("");
+			        wsResource.setLocation(serviceUri+"/v2/api-docs");
+			        //wsResource.setUrl(serviceUri);
+			        //wsResource.setUrl(serviceUri+"/v2/api-docs");
+			        resources.add(wsResource);
+	    		});
+	    	});
+	        return resources;
+	    };
+	    
+	}
+	
+	/**
+	 * 获取Eureka上面的所有服务
+	 * @return TreeMap<服务名,List<该服务的所有在线运行节点>>
+	 */
+	private TreeMap getAllServiceByEureka(){
+    	List<ServiceInstance> temp = new ArrayList<>();
+
+		List<String> allServiceId = discoveryClient.getServices();
+		for (String serviceId : allServiceId) {
+			List<ServiceInstance> list = discoveryClient.getInstances(serviceId);
+			if (list != null && !list.isEmpty()) {
+				temp.addAll(list);
+			}
+		}
+		
+		//获取所有的服务和所在的地址
+		TreeMap nameAndUri = new TreeMap<>();
+		for (ServiceInstance serviceInstance : temp) {
+			if(!nameAndUri.containsKey(serviceInstance.getServiceId().toString())){
+				nameAndUri.put(serviceInstance.getServiceId().toString(), new ArrayList<>());
+			}
+			ArrayList list = (ArrayList) nameAndUri.get(serviceInstance.getServiceId().toString());
+			list.add(serviceInstance.getUri().toString());
+		}
+		
+		return nameAndUri;
+    }
+	
 }
