@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="elastic-job-demo_convert_dao">
+		<!-- 指定生成的java文件的编码 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+		<!-- 这里的type里写的是你的实现类的类全路径 -->
+		<commentGenerator>
+			<!-- 是否添加注释时间戳 -->
+			<property name="suppressDate" value="true" />
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="false" />
+			<!-- 显示数据库的表和列的备注作为注释 -->
+			<property name="addRemarkComments" value="true"/>
+		</commentGenerator>
+
+		<jdbcConnection connectionURL="jdbc:mysql://192.168.21.26:13306/elastic-job-demo"
+			driverClass="com.mysql.jdbc.Driver" password="123456" userId="root" />
+
+		<javaModelGenerator targetPackage="zrk.test.demo.dao.empty"
+			targetProject="elastic-job-demo/src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="zrk.test.demo.dao.mapping"
+			targetProject="elastic-job-demo/src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator targetPackage="zrk.test.demo.dao.mapper"
+			targetProject="elastic-job-demo/src/main/java" type="XMLMAPPER" />
+
+		<table schema="elastic-job-demo" tableName="user_info"
+			enableDeleteByExample="false" enableDeleteByPrimaryKey="false"
+			enableUpdateByExample="false" enableUpdateByPrimaryKey="true"
+			enableInsert="false" enableCountByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="true">
+		</table>
+
+	</context>
+</generatorConfiguration>

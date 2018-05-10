@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+    xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.dangdang.com/schema/ddframe/reg
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+                        http://www.dangdang.com/schema/ddframe/job
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd
+                        ">
+    <!--配置作业注册中心 -->
+    <!-- 
+    	base-sleep-time-milliseconds:等待重试的间隔时间的初始值
+    	max-sleep-time-milliseconds:等待重试的间隔时间的最大值
+    	max-retries:最大重试次数
+    	session-timeout-milliseconds:会话超时时间
+    	connection-timeout-milliseconds:连接超时时间
+    	digest:连接Zookeeper的权限令牌缺省为不需要权限验证
+     -->
+    <reg:zookeeper id="regCenter" server-lists="192.168.21.27:21811,192.168.21.27:21812,192.168.21.27:21813" 
+    namespace="elastic-job-ns" base-sleep-time-milliseconds="1000" max-sleep-time-milliseconds="3000" max-retries="3"
+    session-timeout-milliseconds="60000" connection-timeout-milliseconds="15000" />
+    
+    <bean id="mySimpleJob" class="zrk.test.demo.task.simple.MySimpleJob" />
+    <!-- 配置简单作业-->
+    <!-- <job:simple id="simpleSpringJob" job-ref="mySimpleJob" registry-center-ref="regCenter" 
+    cron="0/20 * * * * ?" sharding-total-count="8" sharding-item-parameters="0=A,1=B,2=C,3=D,4=E,5=F,6=G,7=H" 
+    job-parameter="this is a simple job" failover="true" misfire="true"
+    monitor-port="8091" event-trace-rdb-data-source="dataSource"
+    reconcile-interval-minutes="10">
+    	<job:listener class="zrk.test.demo.task.listener.MyListener"/>
+    </job:simple> -->
+    
+    
+    <!-- 配置数据流作业 -->
+    <job:dataflow id="dataFlowSpringJob" class="zrk.test.demo.task.dataflow.MyDataFlowJob" registry-center-ref="regCenter" 
+    cron="0/10 * * * * ?" sharding-total-count="8" sharding-item-parameters="0=1-2,1=3-4,2=5-6,3=7-8,4=9-10,5=11-12,6=13-14,7=15-max" 
+    job-parameter="this is a dataflow job" failover="true" misfire="true"
+    monitor-port="8092" event-trace-rdb-data-source="dataSource"
+    reconcile-interval-minutes="10">
+    	<!-- 作业监听器 -->
+    	<job:listener class="zrk.test.demo.task.listener.MyListener"/>
+    </job:dataflow>
+    
+    <!-- 配置脚本作业-->
+    <!-- <job:script id="scriptElasticJob" registry-center-ref="regCenter" cron="0/10 * * * * ?" sharding-total-count="3" sharding-item-parameters="0=A,1=B,2=C" script-command-line="/your/file/path/demo.sh" /> -->
+    
+    
+    <!-- 配置带作业数据库事件追踪的简单作业-->
+    <!-- <job:simple id="eventTraceElasticJob" class="xxx.MySimpleListenerElasticJob" registry-center-ref="regCenter" cron="0/10 * * * * ?" sharding-total-count="3" sharding-item-parameters="0=A,1=B,2=C" event-trace-rdb-data-source="yourDataSource">
+    </job:simple> -->
+</beans>
