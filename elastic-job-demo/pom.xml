@@ -54,6 +54,12 @@
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>1.3.2</version>
 		</dependency>
+		<!-- 生成mybatis-generatro自定义格式注释 -->
+		<dependency>
+		    <groupId>org.mybatis.generator</groupId>
+		    <artifactId>mybatis-generator-core</artifactId>
+		    <version>1.3.6</version>
+		</dependency>
 		<!-- elastic job -->
 		<dependency>
 			<groupId>com.dangdang</groupId>

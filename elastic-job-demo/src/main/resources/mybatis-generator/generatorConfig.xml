@@ -5,7 +5,7 @@
 		<!-- 指定生成的java文件的编码 -->
 		<property name="javaFileEncoding" value="UTF-8" />
 		<!-- 这里的type里写的是你的实现类的类全路径 -->
-		<commentGenerator>
+		<commentGenerator type="zrk.test.demo.util.MyBatisGeneratorCommons">
 			<!-- 是否添加注释时间戳 -->
 			<property name="suppressDate" value="true" />
 			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
@@ -13,6 +13,8 @@
 			<!-- 显示数据库的表和列的备注作为注释 -->
 			<property name="addRemarkComments" value="true"/>
 		</commentGenerator>
+		
+		
 
 		<jdbcConnection connectionURL="jdbc:mysql://192.168.21.26:13306/elastic-job-demo"
 			driverClass="com.mysql.jdbc.Driver" password="123456" userId="root" />
