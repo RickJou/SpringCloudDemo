@@ -35,12 +35,12 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.ctrip.framework.apollo</groupId>
 			<artifactId>apollo-client</artifactId>
 			<version>0.10.2</version>
-		</dependency> -->
-		
+		</dependency>
+
 		<!-- 日志 -->
 		<!-- logback日志 -->
 		<dependency>
