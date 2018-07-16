@@ -1,0 +1,35 @@
+﻿
+#生产----------------------------------------------
+#register center
+192.168.10.42	eurekaserver1.com
+192.168.10.43	eurekaserver2.com
+192.168.10.44	eurekaserver3.com
+192.168.10.45	eurekaserver4.com
+192.168.10.46	eurekaserver5.com
+
+#configure center
+192.168.10.42	eurekaconfig1.com
+192.168.10.43	eurekaconfig2.com
+192.168.10.44	eurekaconfig3.com
+
+
+
+
+
+#docker ----------------------------------------------
+192.168.21.27	eurekaserver1.com
+192.168.21.27	eurekaserver2.com
+192.168.21.27	eurekaserver3.com
+192.168.21.27	eurekaserver4.com
+192.168.21.27	eurekaserver5.com
+
+#configure center
+192.168.21.27	eurekaconfig1.com
+192.168.21.27	eurekaconfig2.com
+192.168.21.27	eurekaconfig3.com
+
+
+#技术中心:dev,fat,uat(仅供apollo使用)
+192.168.188.51 eurekaconfig1.com
+192.168.188.52 eurekaconfig2.com
+192.168.188.53 eurekaconfig3.com
