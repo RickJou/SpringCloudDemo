@@ -10,7 +10,7 @@ PORT=10001
 SPRING_CLOUD_PROFILE="--server.port="${PORT}
 SPRING_CLOUD_PROFILE=${SPRING_CLOUD_PROFILE}" --spring.profiles.active=registry1"
 SPRING_CLOUD_PROFILE=${SPRING_CLOUD_PROFILE}" --spring.cloud.inetutils.preferredNetworks[0]=eurekaconfig2.com"
-SPRING_CLOUD_PROFILE=${SPRING_CLOUD_PROFILE}" --eureka.client.serviceUrl.defaultZone=http://eurekaconfig1.com:10001/eureka/,http://eurekasconfig3.com:10001/eureka/"
+SPRING_CLOUD_PROFILE=${SPRING_CLOUD_PROFILE}" --eureka.client.serviceUrl.defaultZone=http://eurekaconfig2.com:10001/eureka/"
 
 #java环境相关
 JAVA_HOME=/usr/local/jdk8

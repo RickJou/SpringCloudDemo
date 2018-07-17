@@ -14,12 +14,12 @@ public class ApolloJavaClientDemo {
 		log.info("使用java client方式获取配置");
 		log.info("获取公共配置");
 
-		System.setProperty("app.id", "hello-apollo");// appid
+		System.setProperty("app.id", "test-project");// appid
 		System.setProperty("env", "dev");// 环境
 		/* 在hosts文件(C:\Windows\System32\drivers\etc\hosts)中加入域名映射:192.168.21.26 docker-nginx*/
 
 		publicConfig();
-		//privateConfig();
+		privateConfig();
 
 		while (true);
 	}
