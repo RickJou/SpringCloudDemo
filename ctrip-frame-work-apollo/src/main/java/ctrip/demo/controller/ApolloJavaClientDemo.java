@@ -15,7 +15,7 @@ public class ApolloJavaClientDemo {
 		log.info("获取公共配置");
 
 		System.setProperty("app.id", "test-project");// appid
-		System.setProperty("env", "dev");// 环境
+		System.setProperty("env", "pro");// 环境
 		/* 在hosts文件(C:\Windows\System32\drivers\etc\hosts)中加入域名映射:192.168.21.26 docker-nginx*/
 
 		publicConfig();
@@ -46,7 +46,7 @@ public class ApolloJavaClientDemo {
 		String somePublicNamespace = "org1.public-namespace";
 		Config config = ConfigService.getConfig(somePublicNamespace); //config instance is singleton for each namespace and is never null
 		String someKey = "common.setting.value";
-		String someDefaultValue = "someDefaultValueForTheKey";
+		String someDefaultValue = "defaultValue";
 		String value = config.getProperty(someKey, someDefaultValue);
 		log.info("公共配置"+someKey+":"+value);
 		
